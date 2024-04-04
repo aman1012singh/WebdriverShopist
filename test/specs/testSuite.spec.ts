@@ -37,49 +37,44 @@ describe("Shop.ist Test Suite",()=>{
        browser.back();
     })
     it("Add Elements To Cart", async()=>{
-        console.log("Add Elements To Cart::::::::::::::::::::::::::::::::::::")
         homepage.clickHeaderLink("SOFAS");
+        await browser.pause(8000);
+
         await homepage.isHeaderLinkOpen("sofas");
-        await itempage.clickProduct("Ivory Covertible Sofa")
-        await browser.pause(5000);
+        await itempage.clickProduct("Ivory Covertible Sofa");
+        await itempage.assertClickedProduct("Ivory Covertible Sofa");
+        await browser.pause(8000);
         await itempage.clickAddToCartButton();
         homepage.clickHeaderLink("CART");
         await homepage.isHeaderLinkOpen("cart");
-        //asertion::::::::::::::::::::::::::::::::::::::::
+        expect(await cartpage.isProductAddedToCart("Ivory Covertible Sofa")).toBeTruthy();
         await browser.pause(10000);
     })
+    
+    // it("Add multiple items in the cart assert total", async()=>{
+        
+    // })
     it("Try to add sold out item ", async()=>{
         console.log("Try to add sold out item ::::::::::::::::::::::::::::::::::::")
         homepage.clickHeaderLink("SOFAS");
         await homepage.isHeaderLinkOpen("sofas");
-        //const v=await itempage.isAvailable("Tall Tufted Couch");
-        await itempage.clickProduct("Tall Tufted Couch")
-
-        //error msg::::::::::::::Assertion:::::::::::::::::::::::::::::::::
+        await itempage.clickProduct("Tall Tufted Couch");
+        await itempage.isErrorMsgDisplayed();
         await browser.pause(10000);        
     })
-    // it("Add multiple items in the cart assert total", async()=>{
-        
-    // })
     it("Add element and checkout", async()=>{
         console.log("Add Elements To Cart::::::::::::::::::::::::::::::::::::")
         homepage.clickHeaderLink("SOFAS");
         await homepage.isHeaderLinkOpen("sofas");
         await itempage.clickProduct("Ivory Covertible Sofa")
-        await browser.pause(5000);
         await itempage.clickAddToCartButton();
         homepage.clickHeaderLink("CART");
         await homepage.isHeaderLinkOpen("cart");
-
-        //asertion::::::::::::::::::::::::::::::::::::::::
-
-        await browser.pause(2000);
         await cartpage.clickCheckoutButton();
-        // Assertion:::::::::::::::::::::::::::::::::::::::::::
         await browser.pause(10000);
         
     })
-    it.only("Edit Profile-> Save Profile -> View Updated Profile", async()=>{
+    it("Edit Profile-> Save Profile -> View Updated Profile", async()=>{
         homepage.clickHeaderLink("MY PROFILE");
         await homepage.isHeaderLinkOpen("profile");
         await browser.pause(2000);
@@ -101,5 +96,7 @@ describe("Shop.ist Test Suite",()=>{
     // it("Sign Up problem", async()=>{
         
     // })
+   
+   
 
 })

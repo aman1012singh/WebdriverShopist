@@ -11,6 +11,15 @@ export class Itempage{
     get addToCartButton(){
         return $('.purchase-button');
     }
+    get productDescription(){
+        return $$('[class="description"] div div');
+    }
+    get soldOutErrorMsg(){
+        return $('[class="modal-title"]');
+    }
+    get shopContinueButton(){
+        return $('[class="modal-button"]');
+    }
     async isAvailable(name: string): Promise<boolean> {
         const productLink = await this.productNamePriceLocator;
         let i;
@@ -30,7 +39,6 @@ export class Itempage{
     }
     async clickProduct(name:string){
         const productLink = await this.productNamePriceLocator;
-        console.log(name);
         for(let i =0; i<productLink.length;i+=2 ){             
             const productName =await productLink[i].getText();
             if(productName==name){
@@ -47,5 +55,16 @@ export class Itempage{
    }
    async clickAddToCartButton() {
         await this.addToCartButton.click();
+   }
+   async assertClickedProduct(name: string){
+       const productDesc=  await this.productDescription;
+       const productName= await productDesc[0].getText();
+    //    const productPrice= await productDesc[1].getText();
+       await expect(productName).toContain(name);
+   }
+   async isErrorMsgDisplayed(){
+        console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<", await this.soldOutErrorMsg.getText());
+        await expect(await this.soldOutErrorMsg).toHaveText("Oops! This item is sold out.");
+        await this.shopContinueButton.click();
    }
 }
